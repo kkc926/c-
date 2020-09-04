@@ -1,0 +1,128 @@
+boolean 0이면 false
+아니면 true
+
+c++에러 1. syntax error / 2. runtime error
+--------------------------------------------
+
+c++에서는 문자열 데이터가 없음
+string을 사용하려면 #include <string>을 사용해야함
+
+문자 하나는 char를 사용함 
+
+char ch;
+ch='a;
+cout<<ch;
+ch='ab'; //에러
+ch="ab"; //에러
+ch='';// 에러'
+
+파이썬과 달리 c언어는 컴파일러를 만들고 그 파일을 실행하기 때문에 에러가 발생하면 실행이 안됨
+
+-------------------------------------------
+
+const 
+
+기호 상수 정의
+한번 초기화 되면 수정 불가
+관례상 대문자로 이름 지정
+
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main(int argc, char const *argv[]) {
+	const double TAX_RATE = 0.25; // 기호 상수 선언
+	int income = 1000;
+	// TAX_RATE = 0.3; -- 에러
+	income = income - TAX_RATE * income;
+	cout << income << endl;
+	return 0;
+}
+
+-------------------------------------------------
+
+auto 
+컴파일러가 문맥을 보고 자동으로 데이터 타입을 결정
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+auto add( int x, int y){
+   return x+y;
+}
+
+int main (int argc, char const *argv[]){
+auto d=1.0; // 값을 보고 double타입이 됨
+auto sum = add(5,10);
+
+cout << d << " " << sum << endl;
+return 0;
+}
+
+-----------------------------------------------------------
+cout 콘솔에대한 출력
+
+#include <iostream>
+#include <string>
+using namespace std;
+int main(int argc, char const *argv[])
+{
+    int i = 100;
+    cout << "변수 i의 값은 ";
+    cout << i;
+    cout << "입니다.";
+    cout << endl;
+    cout << "변수 i의 값은 " << i << "입니다." << endl;
+    return 0;
+}
+
+----------------------------------------------
+cin 콘솔로 부터 값을 입력받는 객체
+ 변수의 데이터 타입에 따라 자동 형 변환(int char ...)
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+int main(int argc, char const *argv[]){
+    int i;
+    cin>>i;
+
+    double f;
+    cin>>f;
+
+    cout << i << " " << f << endl;
+    return 0;
+}
+
+** cin은 terminal에서 실행해야 입력이 가능하다
+출력은 읽기전용이라 입력이 안됨
+
+선언한 데이터타입과 다른 데이터를 입력하면 0 7.83864e-317이런 형식의 값이 나옴.
+
+
+-------------------------------------------------
+사칙연산
+#include <iostream>
+#include <string>
+    using namespace std;
+int main(int argc, char const *argv[])
+{
+    int x = 100;
+    int y = 200;
+    int result = x + y;
+    cout << "x + y : " << result << endl;
+    cout << "x - y : " << x-y<< endl;
+    cout << "x / y : " << x / y << endl;             //정수 / 정수 ---> 정수
+    cout << "x / y : " << x / (double)y << endl;  //정수 / 더블 ---> 더블
+    cout << "x % 3 : " << x % 3 << endl;
+    cout << 1/2  << endl;              // 정수/정수 -->정수
+    cout << 1/2. << endl;              //정수/실수 --> 실수
+    return 0;
+}
+
+--------------------------------------------------
+
