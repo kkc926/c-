@@ -1,0 +1,139 @@
+■ 객체의 구성요소
+ 멤버 변수
+ 객체의 상태를 저장하는 변수
+ 멤버 함수(메서드)
+ 객체 안에 정의된 함수
+ 멤버 변수 접근에 자유로움
+
+정의 이후에 ; 붙이기
+
+
+접근 지정자
+ private
+ 클래스 안에서만 접근(사용)할 수 있음
+ protected
+ 클래스 안과 상속된 클래스에서 접근 가능
+ public
+ 어디서나 접근이 가능
+
+
+정적할당 static assignment
+클래스 타입으로 변수를 선언하면 해당 객체(인스턴스)가 생성됨
+만든 인스턴스는 스택에스택에스택에스택에스택에스택에스택에스택에 지역변수로 저장됨.
+또한 지역변수이므로 함수가 끝났을때 메모리에서 사라짐.
+
+
+동적할당
+만든 인스턴스는 힙에 저장됨(포인터를 통해 관리)
+
+■ 객체 멤버 접근
+ . 연산자로 접근 -->접근 지정자가 public으로 공개되어있을때만 접근 가능
+
+obj.radius = 3;
+obj.calcArea();
+
+
+#include<iostream>
+#include<string>
+using namespace std;
+
+class Circle{
+    public:
+    int radius; //반지름
+    public:
+    string color; //색상
+    public: //각 객체별로 사용가능
+    double calcArea(){     //python과 달리 self 매개 변수 없음.
+        return 3.14 *radius * radius; // 멤버 변수 접근시 바로사용
+    }
+};
+int main(int argc, char const *argv[]){
+   Circle obj; //객체생성
+   obj.radius = 100; 
+   obj.color = "blue";
+//    obj.area = 40; //에러 -- 동적으로 멤버추가 불가 (파이썬은 가능)
+
+   cout <<"원의면적 " << obj.calcArea()<<endl;
+   return 0;
+}
+
+
+-----------오버로드
+#include <iostream>
+#include <string>
+using namespace std;
+class PrintData
+{
+public:
+    void print(int i) { cout << i << endl; }
+    void print(double f) { cout << f << endl; }
+    void print(string s = "No Data!") { cout << s << endl; }
+};
+int main(int argc, char const *argv[])
+{
+    PrintData prn;
+    prn.print(1);
+    prn.print(3.14);
+    prn.print("C++ is cool.");
+    prn.print();
+    return 0;
+}
+------------
+
+
+캡슐화 : 데이터를 하나로 묶는다
+정보 은닉 : public/private
+상속과 다형성 : 형태가 많다. <--이걸 잘해야댐
+
+------상속
+class 자식 클래스명: public 부모 클래스명 { ///-->public이면 부모클래스의 접근자를 가져옴. 만약 private을 입력하면 private으로 바꿈
+// 자식 클래스 멤버 정의
+}
+
+
+부모클래스 멤버가 private이면 상속되지 않는다 상속을 고려하면 protected를 이용해야함
+---------------------------------
+
+■ 클래스 원형과 구현 정의 분리
+ 헤더 파일에 클래스 원형
+ 멤버 변수 정의
+ 멤버 함수의 원형 정의
+ cpp 파일에 멤버 함수 정의
+ 헤더 파일을 먼저 include
+ 멤버 함수 구현
+
+
+int a;
+int a;
+
+void test() {
+ int a= 10;
+}
+void test() {
+ int b= 20;
+}
+
+둘다 에러가남, c++에서는 중복선언 불가능함.
+
+따라서 인포트할때 주의해야함// main에 c1,c2,c3를 인포트하는경우에 만약 c3에 c1이 포함되어있다면 main에 인포트할때 중복되었다는 듀플리케이트 에러가남
+
+
+1. F1
+2. create new c++ --->g++/linux
+3. create new class 
+
+Car.hpp --> 클래스 원형, 함수 원형
+Car.cpp --> 클래스 정의, 함수 정의
+main.cpp -->실행
+
+
+make-> 헤더 와 cpp로 main.exe 파일을 만듬
+bin\main.exe 로 실행
+make run으로도 실행가능
+
+#pragma once
+include를 한번만해서 중복실행을 방지함.
+여러파일에서 동일한 파일을 include하는 비효율을 막는다.
+
+c++은 클래스여도 일반 변수와 같은 특성을 갖는다 
+call by value/ reference/ address 일일이 설정해줘야함 & *

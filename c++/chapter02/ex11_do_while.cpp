@@ -1,16 +1,12 @@
 #include <iostream>
-#include <string>
+#include<string>
 using namespace std;
-int main(int argc, char const *argv[])
-{
-    string str;
-    do
-    {
-        
-        cout << "¹®ÀÚ¿­À» ÀÔ·ÂÇÏ¼¼¿ä:";
-        getline (cin, str);
-        // cin>>str;
-        cout << "»ç¿ëÀÚÀÇ ÀÔ·Â: " << str << endl;
-    } while (str != "Á¾·á");
-    return 0;
+int main(int argc, char const *argv[]) {
+string str;
+do {
+cout<<"ë¬¸ìžì—´ì„ ìž…ë ¥í•˜ì„¸ìš”:";
+getline(cin, str);
+cout << "ì‚¬ìš©ìžì˜ ìž…ë ¥: " << str << endl;
+} while(str != "ì¢…ë£Œ");
+return 0;
 }

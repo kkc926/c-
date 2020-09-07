@@ -1,14 +1,15 @@
 #include <iostream>
-    using namespace std;
-int main(int argc, char const *argv[])
-{
+using namespace std;
+
+int main(int argc, char const *argv[]){
     int x = 100;
-    if (x == 100)
-        cout << "xê°€ 100ìž…ë‹ˆë‹¤. " << endl;
-    if (x == 100)
-    {
-        cout << "xì˜ ê°’ì„ ì¶œë ¥í•©ë‹ˆë‹¤." << endl;
-        cout << "xê°€ 100ìž…ë‹ˆë‹¤. " << endl;
+
+    if (x==100)
+    cout << "x°¡ 100ÀÔ´Ï´Ù."<<endl;
+
+    if ( x==100){
+        cout << "xÀÇ °ªÀ» Ãâ·ÂÇÕ´Ï´Ù." <<endl;
+        cout << "x°¡ 100ÀÔ´Ï´Ù. "<<endl;
     }
     return 0;
 }

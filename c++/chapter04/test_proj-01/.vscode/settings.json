@@ -1,0 +1,6 @@
+{"terminal.integrated.shellArgs.windows":["/K", "chcp 65001"],
+    "files.associations": {
+        "*.tpp": "cpp"
+    },
+    "terminal.integrated.shell.windows": "cmd.exe"
+}

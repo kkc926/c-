@@ -1,360 +1,276 @@
-관계연산자
+함수와 문자열
 
-boolalpha; 부울린을 true, false로 출력
-
-#include <iostream>
+#include<iostream>
 using namespace std;
-int main(int argc, char const *argv[])
-{
-    bool b;
-    b = (1 == 2);
-    cout << std::boolalpha;
-    cout << b << endl;
-    return 0;
-}
 
-----------------------------------------------
-#include <iostream>
-using namespace std;
-int main(int argc, char const *argv[])
-{
-    bool b;
-    int x = 3;
-    int y = 3;
-    cout << std::boolalpha; // 부울린을 true, false로 출력
-    b = (x == 3) && (y == 3);
-    cout << b << endl;
-    y = 2;
-    b = (x == 3) && (y == 3);
-    cout << b << endl;
-    b = (x == 3) || (y == 3);
-    cout << b << endl;
-    x = 2;
-    b = (x == 3) || (y == 3);
-    cout << b << endl;
-    b = !(x == 3);
-    cout << b << endl;
-    return 0;
-}
--------------------------------------------------
-cpp실행시 틀 만들기
-사용자 코드조각 -> c++ -> cpp.json 
-{
-	// Place your snippets for cpp here. Each snippet is defined under a snippet name and has a prefix, body and 
-	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
-	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
-	// same ids are connected.
-	// Example:
-	"Print to console": {
-		"prefix": "c++_main",
-		"body": [
-			"#include<iostream>;",
-			"using namespace std;",
-			"int main(int argc, char const *argv[]){",
-			"   $0",
-			"   return 0;",
-			"}"
-
-		],
-		"description": "c++ main 함수"
-	}
-}
-으로 수정 $0는 커서 위치임
-
----------------------------------------------
-
-if 문 //else if //else
-
-#include <iostream>
-using namespace std;
-int main(int argc, char const *argv[])
-{
-    int x, y;
-    cout << "x값을 입력하세요";
-    cin >> x;
-    cout << "y값을 입력하세요";
-    cin >> y;
-    if (x > y)
-        cout << "x가 y보다 큽니다." << endl;
-    else if (x < y)
-        cout << "x가 y보다 작습니다." << endl;
+int max (int x, int y){
+    if (x>y)
+        return x;
     else
-        cout << "x와 y가 같습니다." << endl;
-    return 0;
+        return y;
+        
 }
---------------------------------------------------
-switch 문 
-
-
-case는 정수만 가능(int)하다 이유는 동등연산자로 값을 비교하기 때문
-
-실수, 부동소수점, 문자 다안됨. (Java는 가능 c++은 불가능)
-
-#include<iostream>
-using namespace std;
-int main(int argc, char const *argv[]){
-   int number;
-
-   cout << "숫자를 입력하세요 : ";
-   cin >> number;
-
-   switch(number){
-       case 0:
-       cout << "zero\n";
-       break;
-       case 1:
-       cout<<" one\n";
-       break;
-       case 2:
-       cout <<" two\n";
-       default:
-       cout << " many\n";
-       break;
-   }
-   return 0;
-}
-
-------------------------------------------------------------
-
-
-반복문 (while for dowhile)
-
-while문에서 루프를 돌릴때 조건변수를 n을 변화해주는 코드를 입력해주어야함 안그러면 무한루프
-
-while문은 조건이 앞에있어 조건에 안맞으면 실행안함
-#include<iostream>
-using namespace std;
-int main(int argc, char const *argv[]){
-   int n=10;
-
-   while (n>0){
-       cout << n << " ";
-       n--;
-   }
-
-   cout << "fire!"<<endl;
-   return 0;
-}
-
-
-
----구구단
-#include<iostream>
-using namespace std;
 int main(int argc, char const *argv[]){
    int n;
-   int i=1;
-
-   cout <<"구구단 중에서 출력하고 싶은 단을 입력하세요: ";
-   cin>>n;
-
-   while (i<=9){
-       cout << n << " * " << i
-            << " = " << n*i << endl;
-        i++;
-   }
+   n=max(2,3);
+   cout << "함수호출결과 : "<<n<<endl;
    return 0;
 }
----do while문
-조건이 뒤에 있기때문에 무조건 한번은 실행함
+
+-------------------------------------------
+
+void : 리턴 데이터가 없는 경우에 사용한다.
+
+함수 인자 전달방법 
+
+1.call by value 값 복사 (파이썬에서는 숫자, 불린만 call by value) c++은 제한없이 다 가능
+
+2.call by reference 값 참조  : 기존 변수에 새로운 이름을 추가하는 것 저장 공간 하나에 대해서 운영할 수 있는 이름을 추가한다.
+
+3. call by address(pointer) 주소 
+
+
+----------call by value
+#include <iostream>
+using namespace std;
+void swap(int x, int y) {
+int t;
+t = x;
+x = y;
+y = t;
+}
+int main(int argc, char const *argv[]) {
+int a = 100, b = 200;
+printf("a=%d, b=%d\n", a, b);
+swap(a, b);
+printf("a=%d, b=%d\n", a, b);
+return 0;
+}
+
+---------call by reference 참조 매개변수를 통해 원본의 값을 수정할 수 있다.
+
+#include <iostream>
+using namespace std;
+void swap(int &x, int &y) // x,y의 공간이 만들어 지지 않는다 a,b의 닉네임 x,y를 만듬 --->따라서 대입한 값은 원본을 수정함.
+{
+    int t;
+    t = x;
+    x = y;
+    y = t;
+}
+int main(int argc, char const *argv[])
+{
+    int a = 100, b = 200;
+    printf("a=%d, b=%d\n", a, b);
+    swap(a, b);
+    printf("a=%d, b=%d\n", a, b);
+    return 0;
+}
+
+
+----------------------------------------------------------------
+중복함수 (overload)
+
+함수의 이름은 동일하지만 함수의 인자가 다르면 다른 함수로 인식 (python은 지원 안됨)
+리턴타입은 상관 없음.
+
+void print(int)
+void print(double)
+void print(char)
+
+----
+#include<iostream>
+using namespace std;
+
+
+int square (int i){
+    cout << "square(int) 호출 "<<endl;
+    return i*i;
+}
+double square (double i){
+    cout << "square(double) 호출 "<<endl;
+    return i*i;
+}
+
+int main(int argc, char const *argv[]){
+    cout << square(10)<<endl;
+    cout << square(2.1)<<endl; 
+   return 0;
+}
+-----------------------------------
+
+인수의 디폴트 값 원하는 인수로 배열을 초기화하기
+
+#include<iostream>
+using namespace std;
+
+void initArray(int array[] ,int value = 0){
+    int size = sizeof(array)/sizeof(int); //배열의 길이 구하기
+
+    for (int i=0; i <size  ; i++){
+        array[i]=value;
+    }
+
+
+}
+
+int main(int argc, char const *argv[]){
+    int intList[10];
+
+    initArray(intList, 100); //100으로 초기화 하고싶다.
+    initArray(intList); // 0으로 초기화 하고싶다.
+
+   return 0;
+}
+
+----배열의 복사
+call by value가 가능하다 --> 값1=값2 이 가능하다
+배열1=배열2 가능?? ---->불가능 ---> call by value가 불가능함
+배열은 call by adress로 복사가된다.(포인터) 
+
+#include<iostream>
+using namespace std;
+
+void initArray(int array[], int size, int value = 0){
+  
+
+    for (int i=0; i <size  ; i++){
+        array[i]=value;
+    }
+
+
+}
+
+void printArray(int array[] ,int size){
+    //int size = sizeof(array)/sizeof(int); //배열의 길이 구하기
+
+    for (int i=0; i <size  ; i++){
+        cout << array[i] << ", ";
+    }
+    cout << endl;
+}
+
+int main(int argc, char const *argv[]){
+    const int ARRAY_SIZE = 40;
+    int intList[ARRAY_SIZE];
+    
+
+    initArray(intList,ARRAY_SIZE, 100); //100으로 초기화 하고싶다.
+    printArray(intList, ARRAY_SIZE);
+    initArray(intList,ARRAY_SIZE); // 0으로 초기화 하고싶다.
+    printArray(intList, ARRAY_SIZE);
+   return 0;
+}
+
+------------------------------------------------------------------------------
+문자열
+
+c++은 문자열 타입이 없으므로 #include <string>을 먼저 지정 후 사용
+
+파이썬 문자열은 원본 조작이 불가능함
+c++은 가능하다
+s.insert(pos, s2)
+sremove(pds, len)을 이용
+
+#include<iostream>
+using namespace std;
+int main(int argc, char const *argv[]){
+   
+
+   string s1="slow", s2="steady";
+   string s3="the race.";
+   string s4;
+
+   s4=s1+" and " +s2 + " wins " +s3;
+
+   cout << s4<< endl;
+   return 0;
+}
+
+------
+문자열 입력받기.
 
 #include <iostream>
 #include <string>
 using namespace std;
 int main(int argc, char const *argv[])
 {
-    string str;
-    do
-    {
-        cout << "문자열을 입력하세요:";
-        // getline(cin, str);
-        cin>>str;					cin의 경우 공백을 문장의 끝으로 인식하여 안녕 하세요를 입력하면 안녕 사용자의입력:하세요. 로 출력됨
-        cout << "사용자의 입력 : " << str << endl;
-    } while (str != "종료");
+    string s1, addr;
+    cout << "이름을 입력하세요: ";
+    cin >> s1;
+    cin.ignore(); // 엔터키 제거 "홍길동\r\n" \n을 제거해준다
+    cout << "주소를 입력하세요: ";
+    getline(cin, addr);
+    cout << addr << "의" << s1 << "씨 안녕하세요?" << endl;
     return 0;
 }
 
------for 문
-
+-------------------
+c++은 문자열 수정 및 삭제가 가능하다.
 #include <iostream>
+#include <string>
 using namespace std;
-int main()
+int main(int argc, char const *argv[])
 {
-    int sum = 0;                                     꼭 초기화해줘야함 sum=0
-    for (int i = 0; i <= 10; i++)
-    {
-        sum += i;
-    }
-    cout << "1부터 10까지 정수의 합 = " << sum << endl;
+    string s = "When in Rome, do as the Romans.";
+    int size = s.size();
+    int index = s.find("Rome");
+    cout << size << endl;
+    cout << index << endl;
+
+    cout << sizeof(s) << endl; //?
+
+    s.insert(0, "Hello !! "); //맨 앞에 문자열 추가
+    cout << s << endl;
+
+    s += " End of World"; ///맨 뒤에 문자열 추가
+    //s=s+"End of World";
+    cout << s << endl;
+    s.append("\n-----------------------\n"); // 맨뒤에 문자열 추가
+    cout << s;
     return 0;
 }
+---------------------
+배열이름은 배열의 첫번째 엘리먼트의 주소값을 갖는다. 주소값을 갖는 상수이다.
+string list[] --> list는 지역변수로 스택에 형성됨, 또한 상수이기 때문에 값을 변경할 수 없다. (대입연산 배열1 = 배열2 이 안되는 이유) 
+list는 첫번째 엘리먼트의 주소가 저장된다. 
 
 
-
-#include <iostream>
-using namespace std;
-int main()
-{
-    long fact = 1;
-    int n;
-    cout << "정수를 입력하세요: ";
-    cin >> n;
-    for (int i = 1; i <= n; i++)
-    {
-        fact = fact * i;
-    }
-    cout << n << "! = " << fact << endl;
-    return 0;
-}
------for break, continue문 보통 if문과 함께쓴다.
-
-#include <iostream>
-using namespace std;
-int main() {
-for(int i=1; i<10; i++) {
-cout << i << " ";
-if(i==4) break;
-}
-return 0;
-}
-
-
-
-#include <iostream>
-using namespace std;
-int main()
-{
-    for (int i = 1; i < 5; i++)
-    {
-        cout << "continue 문장 전에 있는 문장" << endl;
-        continue;
-        cout << "continue 문장 이후에 있는 문장" << endl;
-    }
-    return 0;
-}
-
-
--------------------------------------------------------------------------
-
-배열
- -'같은 종류의 데이터'<--(파이썬과 다른점) 들이 순차적으로 메모리에 저장되는 자료 구조
- -각각의 데이터(요소)들은 인덱스(번호)를 사용하여 독립적으로 접근 가능
- -대용량의 데이터를 동일한 이름으로 쉽게 저장하고 처리 가능
-
-   -다른언어와 달리 크기가 고정되어있어 엘리먼트 갯수를 관리해야함
-(파이썬에선 length 함수로 확인 가능함)
-
+&참조값을 붙이고 안붙이고 읽기 쓰기 차이
 #include<iostream>
+#include<string>
 using namespace std;
 int main(int argc, char const *argv[]){
+   string s= "When in Rome, do as Romans.";
+//읽기
+   for ( auto& ch : s ){ //char &ch = s[i] //&가 있으면 ch가 별도로 생기는것이 아니고 엘리먼트에 ch라는 닉네임이 생성됨, 복사,출력이 아닌 그냥 출력을 하여 속도가 빨라짐
+       cout << ch << ' ';
+
+   }
+   cout << endl;
+
+   for ( auto ch : s ){ //char ch = s[i]  //& 가 없는경우 ch의 메모리 공간이 만들어지고, 루프가 돌면서 ch변수로 복사된 후 출력됨
+       cout << ch << ' ';
+ ///////////////////참조, 복사 둘다 읽기에서는 차이가 없음.
+   }
+   cout << endl;
+//쓰기  
+   for (auto& ch : s){ //char &ch = s[i] //ch라는 공간을 만들지 않음 엘리먼트를 나타내는 변수(닉네임)로써 ch를 사용하겠다.--->따라서 대입한 값은 원본을 수정함.
+       ch = 'T';
+   }
+   cout << s << endl;
+
+   cout << endl;
+
+   for (auto ch : s){ //char ch = s[i] //ch란 공간을 만듬--> 루프를돌며 s값을 가져옴 --> 공간에 W를 대입하여 덮어씀
+       ch = 'W'; 
+
+   }
+   cout << s << endl;
    
-   const int STUDENTS = 10; //배열의 숫자
-
-   int scores[STUDENTS]; //숫자 10만 쓰면 무슨데이터인지 한번에 알 수 없어서 변수를 사용함
-
-    int sum = 0;
-    int i, average;
-
-    for (i=0; i<STUDENTS;i++){
-        cout <<"학생들의 성적을 입력하시요: ";  //<---사용자 입력으로 값을 초기화한다.
-        cin >>scores[i];
-    }
-    for (i=0; i<STUDENTS; i++){
-        sum += scores[i];
-    }
-    average = sum / STUDENTS;
-    cout<<"성적 평균= " <<average << endl;
-
 
    return 0;
 }
 
--------배열의 초기화
-
-테스트할때 일일이 입력하기는 번거롭다 {}를 이용해 고정된 배열을 만들자
-
-#include <iostream>
-using namespace std;
-int main()
-{
-    const int STUDENTS = 5;
-    int scores[STUDENTS] = {         // 만약 5개 이상의 값을 넣으면 syntaxerror : too many initializers for 'int []' 가 뜸
-        100, 200, 300, 400, 500};
-    int sum = 0;
-    int i, average;
-    for (i = 0; i < STUDENTS; i++)
-    {
-        sum += scores[i];
-    }
-    average = sum / STUDENTS;
-    cout << "성적 평균= " << average << endl;
-    return 0;
-}
-
-값이 모두 0인 배열만들기
-int scores[STUDENTS]={0,}   /// {}
-
------- 소수점까지평균구하기 
-받을 변수를 double로 선언하고, sum이나 STUDENTS를 double로 만든다.
-#include <iostream>
-using namespace std;
-int main()
-{
-    const int STUDENTS = 7;
-    int scores[STUDENTS] = {
-        100, 200, 300, 400, 550,500,433};
-    int sum = 0;
-    int i; 
-    double average;
-    for (i = 0; i < STUDENTS; i++)
-    {
-        sum += scores[i];
-    }
-    average = sum / (double)STUDENTS;
-    cout << "성적 평균= " << average << endl;
-    return 0;
-}
-
-
----------------------------제어구조
-
-향상된 for문
-for ( 변수 : 범위 ) {
-}
-
-for (i = 0; i < STUDENTS; i++) 이렇게 쓸필요없이
-for (i=0 : STUDENTS) 끝
-
-
-#include<iostream>
-using namespace std;
-int main(int argc, char const *argv[]){
-   int list[] = {1,2,3,4,5,6,7,8,9,10};
-   int sum = 0;
-   for (int i : list){
-       sum += i;
-   }
-   cout << sum << endl << endl;
-
-   for (int&i : list){
-       cout << i << " ";
-   }
-    cout << endl;
-    for (auto& i : list){
-        cout << i << " ";
-    }
-   return 0;
-}
------------------------------------------
-
-c++ 변수의 타입 3개
-일반변수 int 변수명 ex) int sum = 0 , int total=0 독립된 sum, total값이 생성됨 
-참조변수 int & 변수명  ex) int &total = sum -----> int total, int sum 둘다 값이 0이며 sum의 값에 total이라는 이름을 하나 더 주는것 (닉네임을 만들어줌) 엘리먼트에 접근접근접
- 쓰임: 복사를 하지 않고 그때그때 참조만 하기 때문에 데이터 절약이 가능함.
-<시간상의 이점이 생김 
--참조가 아닐떈 메모리에 공간이 생기고 데이터를 복사하는 시간이 걸린다 데이터가 커지면 복사하는 시간이 길어짐
--참조면 데이터가 복사 후 출력이 아니고 i가 각 엘리먼트에 별칭으로 배정이된다 그래서 '복사하고 출력하는 시간을 절약할 수 있다.'>
-
-포인터변수 
-
- 
+참조변수 --> 함수에서 매개변수를 대입받을때, for문 사용할때 두개에서 많이 쓰임
+c++ 작업시 주의할점 -> 데이터가 어디에 있느냐? 복사본인지 원본인지 구분하는것이 중요함.
