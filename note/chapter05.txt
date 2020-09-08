@@ -1,0 +1,128 @@
+생성자와 접근 제한자
+
+생성자 : 객체가 인스턴스화 할떄 자동으로 호출되는 멤버함수
+
+멤버 변수의 초기화가 주요 역할임
+
+생성자를 정의하지 않으면 컴파일러에 의해 디폴트 생성자가 자동 추가됨
+ 디폴트 생성자
+ 매개변수가 없는 생성자
+
+
+#include <iostream>
+using namespace std;
+
+class Time
+{
+public:
+    int hour;
+    int minute;
+
+    //생성자
+    Time(int h, int m)
+    {
+        hour = h;
+        minute = m;
+    }
+
+    void print()
+    {
+        cout << hour << ':' << minute << endl;
+    }
+};
+
+int main()
+{
+    // Time a;
+    Time b(10, 25); <----이방법으로 생성자를 호출하는것이 가장 편함
+    Time c{10, 25};
+    Time d = {10, 25}; //(){}={}로 생성자 호출 가능
+    b.print();
+    c.print();
+    d.print();
+    return 0;
+}
+---------------------정적할당 대입연산 c=b 복사인가 참조인가
+    b.print();
+    c.print();//같은값이면 참조, 다른값이면 복사본 -->정적할당에서 대입연산은 c++은복사 , 파이썬은 참조임
+
+#include <iostream>
+using namespace std;
+
+class Time
+{
+public:
+    int hour;
+    int minute;
+
+
+    Time(){
+        hour=0;
+        minute=0;
+     } //디폴트 생성자
+    //생성자 오버로드
+    Time(int h, int m)
+    {
+        hour = h;
+        minute = m;
+    }
+
+    void print()
+    {
+        cout << hour << ':' << minute << endl;
+    }
+};
+
+int main()
+{
+    Time a; //디폴트 생성자를 사용
+    Time b(10, 25);
+    Time c{10, 25};
+    
+    c=b; //? 복사인가 참조인가 
+    c.hour=3;
+
+
+    b.print();
+    c.print();//같은값이면 참조, 다른값이면 복사본 -->정적할당에서 대입연산은 c++은복사 , 파이썬은 참조임
+    
+    return 0;
+}
+
+----------------------
+
+
+■ 소멸자
+ ~클래스명()
+ 인스턴스 변수가 메모리에서 사라질 때 자동으로 호출
+ 전역변수 : 프로그램 종료시
+ 지역변수 : 블럭이 끝날 때
+ 동적 생성 변수 : delete 호출시
+ 동적 할당된 자원의 cleanup 작업 수행
+ 매개변수가 없으며 오버로드 불가능 --> 1개 만 만들 수 있음
+동적메모리를 사용하지 않을때는 사용할필요 없음.
+정의하지 않으면 시스템이 디폴트로 추가해줌(소멸자 역할은 하지 않음).
+---------------------------------
+#include <string.h>
+class MyString
+{
+private:
+    char *s;
+    int size;
+
+public:
+    MyString(char *c)
+    {
+        size = strlen(c) + 1;
+        s = new char[size];
+        strcpy(s, c);
+    }
+    ~MyString()
+    {
+        delete[] s;
+    }
+};
+int main()
+{
+    MyString str("abcdefghijk");
+}

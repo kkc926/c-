@@ -1,0 +1,36 @@
+객체와 함수의 관계
+
+----------------------------
+
+객체와 함수의 관계
+ 객체가 함수의 매개 변수로 전달되는 경우 call by value 
+ 객체의 참조자가 함수의 매개 변수로 전달되는 경우 call by reference
+ 함수가 객체를 반환하는 경우 
+
+#include<iostream>
+#include<string>
+using namespace std;
+class Pizza{
+    public:
+    int size;
+    Pizza(int s) : size(s){}
+};
+void makeDouble(Pizza &p){
+    p.size *=2;
+}
+//
+void makeDouble(Pizza p){ //call by value일때는 원본값은 안바뀜
+    p.size *=2;
+}
+
+int main(int argc, char const *argv[]){
+   Pizza pizza(10);
+   makeDouble(pizza);
+   cout <<pizza.size<<"인치피자"<<endl;
+   return 0;
+}
+
+----------------------------------------------------------
+■ 함수가 객체를 반환하는 경우
+ 객체의 내용이 복사될 뿐 원본이 전달되지 않음
+

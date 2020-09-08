@@ -1,0 +1,137 @@
+객체 배열----------------------------------------
+객체를 요소로 가지는 배열
+클래스명 배열_이름[배열_크기];
+ex) Circle objArray[3];
+
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Circle
+{
+public:
+    int x, y;
+    int radius;
+
+    Circle() : x(0), y(0), radius(0) {} //디폴트생성자를 반드시 정의하는 습관 들이기
+    Circle(int x, int y, int r) : x(x), y(y), radius(r) {}
+    void print()
+    {
+        cout << "반지름: " << radius << " @(" << x << "," << y << ")" << endl;
+    }
+};
+
+int main()
+{
+    Circle objArray[10]; // 10개의 요소가 디폴트 생성자에 의해 생성 ##########중요중요중요중요###
+    for (Circle c : objArray){ //초기화가 어떻게 되었는지 확인
+        c.print();
+    }
+    for (Circle &c : objArray)
+    {
+        c.x = rand() % 500;
+        c.y = rand() % 300;
+        c.radius = rand() % 100;
+    }
+    for (Circle c : objArray)
+    {
+        c.print();
+    }
+    cout << "-----------" << endl;
+    cout << "Circle memory size : "<< sizeof(Circle)<<endl;//Circle 인스턴스 크기
+    cout << "array length : "<<sizeof(objArray)<<sizeof(Circle)<<endl;//배열의 길이
+
+    return 0;
+
+---------------------------------
+벡터
+ 배열은 크기가 고정되어 있는 단점이 있음
+ 벡터는 동적으로 크기를 자동 조정
+ #include <vector>
+    vector<int> scores(10)
+    배열의 자료형 배열의 이름 배열의 크기(초기용량이며 값에따라 크기가 증가함.)
+
+#include <vector>
+#include <iostream>
+using namespace std;
+int main()
+{
+    vector<int> fibo = {0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89};
+    for (auto &number: fibo)
+    {
+        cout << number << ' ';
+    }
+    cout << endl;
+    return 0;
+}
+
+-----push_back()[파이썬의 append] 과 pop_back()[파이썬의 pop]
+
+#include <vector>
+#include <iostream>
+using namespace std;
+int main()
+{
+    vector<int> v; //백터의 디폴트 생성자를 이용하겠다
+    v.push_back(10);
+    v.push_back(20);
+    v.push_back(30);
+    v.push_back(40);
+    v.push_back(50);
+    for (auto &e: v)
+    {
+        cout << e << ' ';
+    }
+--------------백터와 연산자
+
+#include <vector>
+#include <iostream>
+using namespace std;
+int main()
+{
+    vector<int> v1{1, 2, 3, 4, 5};
+    vector<int> v2(v1);
+    if (v1 == v2)
+    {
+        cout << "2개의 벡터가 일치합니다." << endl;
+    }
+    return 0;
+}
+
+-------객체의 저장
+
+#include <vector>
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Circle
+{
+public:
+    int x, y;
+    int radius;
+
+    Circle() : x(0), y(0), radius(0) {}
+    Circle(int x, int y, int r) : x(x), y(y), radius(r) {}
+    void print()
+    {
+        cout << "반지름 : " << radius << " @(" << x << "," << y << ")" << endl;
+    }
+};
+
+int main(int argc, char const *argv[])
+{
+    vector<Circle> objArray;
+
+    for (int i = 0; i < 10; i++)
+    {
+        Circle obj{rand() % 300, rand() % 300, rand() % 100};
+        objArray.push_back(obj);
+    }
+    for (auto &c : objArray)
+    {
+        c.print();
+    }
+    return 0;
+}
