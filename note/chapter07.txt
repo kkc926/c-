@@ -139,3 +139,282 @@ delete pB;//// 이미 pA로 지웠기 때문에 pB가 실행될때 죽게된다
 
 정리 : 동적데이터 설정시 죽는경우 2가지 1. new로 값설정을 안하고 지우는 경우, 2. 같은 데이터를 두번 지우는 경우
 이것을 보완한 smart pointer가 있다.
+
+------------------
+
+동적할당에선 new에 의해 배열이 0(null)으로 초기화된다.
+정적일땐 초기화를 따로 안해주니 직접 초기화 해줘야함.
+
+int *p; -----> int *p = null; null로 초기화해서 쓰는것을 권장
+p = new int[5]; ----> {0,0,0,0,0} 동적할당이니 0으로 초기화됨
+int *p = new int[5] {0,1,2,3,4};  따로 값을 주어 초기화가능
+
+
+----------------
+
+삭제
+
+int *p=new int;
+.
+.
+.
+delete p; // 단일 데이터 삭제
+
+int *p = new int[5] {0,1,2,3,4};
+delete [] p; // 배열 데이터 삭제 []를 붙여준다.
+배열인데 delete p; 를 하면 프로그램이 죽을 수 있다
+
+----- new delete
+#include <iostream>
+#include <time.h>
+using namespace std;
+int main()
+{
+    int *ptr;
+    
+
+    srand(time(NULL));
+
+    ptr = new int[10];
+
+    //ptr은 할당된 동적 메모리의 시작 주소,
+    //따라서 ptr은 첫 번째 엘리먼트(ptr[0])에 대한 포인터
+    // *ptr은 ptr[0]과 같음
+
+
+    for (int i=0; i<10;i++){
+        // ptr[i]=rand();
+        *(ptr+i)=rand(); //ptr+i가 되는게 아니고 ptr의 0번째 1번째 2번째 3번째...를 나타냄. 몇번째 엘리먼트인지 따라서 값이 4씩 증가함.(sizeof(int)*i)와 동일
+    }
+    for (int i=0;i<10;i++){
+        // cout << ptr[i]<<" ";
+        cout << *(ptr+i)<< " ";
+    }
+    cout <<endl;
+    delete []ptr;
+    return 0;
+
+}
+----------
+가비지
+
+#include<iostream>
+#include<string>
+#include <time.h>
+using namespace std;
+int main(int argc, char const *argv[]){
+   int *ptr = new int;
+
+   *ptr = 99; // ptr=99 ptr의 값을 99로 저장해라 ptr의 주소값 99를 넣어라 / *ptr=99 ptr이 가리키는 곳에 데이터로 99를 넣기
+   return 0;
+}////////생성만 하면 가비지가 생성됨.
+
+------------------
+가비지 회수를위한 c++의 특별한 기능
+
+int *pA =new Int(10)
+int *pB= pA; //하나의 주소를 두개의 포인터가 공유
+
+delete pA;
+delete pB; ////<---여기서 문제가생김.
+
+■ 스마트 포인터
+ 포인터의 동적 메모리 회수를 자동으로 처리해줌
+ 포인터 변수가 제거될 때 자동으로 delete 호출
+ #include <memory> 추가 후 사용
+ unique_ptr
+ 포인터에 대해 오직 하나의 소유자만 허용
+
+unique_ptr<int[]> buf(new int[10]);
+ shared_ptr
+ 참조 횟수가 계산되는 스마트 포인터
+
+--
+#include <iostream>
+#include <string>
+#include <memory>
+using namespace std;
+int main(int argc, char const *argv[])
+{
+
+    unique_ptr<int[]> buf(new int[10]); // buf 버퍼, 임시데이터 저장공간을 말함
+    // unique_ptr<int[]> buf =  new int[10];//에러(대입연산 아님)
+    for (int i = 0; i < 10; i++)
+    {
+        buf[i] = i; //*(buf+i)=i 와동일
+    }
+    for (int i = 0; i < 10; i++)
+    {
+        cout << buf[i] << " ";
+    }
+    cout << endl;
+    return 0;
+}
+
+-------------------------------------------------
+■ 객체의 동적 생성
+ 객체에 대해서도 동일한 원칙 적용
+ 멤버 접근에 대한 표현이 다름
+ 포인터_변수->멤버
+
+Dog *pDog = new Dog;
+pDog->age = 10;
+:
+delete pDog;
+
+리턴값이 붙으면 안되고, 클래스 명과 생성자 또는 소멸자의 이름이 같아야함.
+
+#include<iostream>
+#include<string>
+using namespace std;
+
+
+class Dog{
+    public:
+    int age;
+    string name;
+
+    Dog(){ //생성자 호출
+        cout << "Dog 생성자 호출" <<endl;
+        age = 1;
+        name = "바둑이";
+    }
+
+    ~Dog(){ // 소멸자 호출
+        cout << "Dog 소멸자 호출"<<endl;
+    }
+};
+int main(int argc, char const *argv[]){
+  Dog *pDog= new Dog;
+  
+//   delete pDog;
+
+   return 0;
+}
+--
+스마트포인터로
+#include<iostream>
+#include<string>
+#include<memory>
+using namespace std;
+
+
+class Dog{
+    public:
+    int age;
+    string name;
+
+    Dog(){ //생성자 호출
+        cout << "Dog 생성자 호출" <<endl;
+        age = 1;
+        name = "바둑이";
+    }
+
+    ~Dog(){ // 소멸자 호출
+        cout << "Dog 소멸자 호출"<<endl;
+    }
+};
+int main(int argc, char const *argv[]){
+  unique_ptr<Dog> dog(new Dog);
+  
+//   delete pDog;
+
+   return 0;
+}
+
+--------------------------------------
+■ 포인터로 객체 멤버 접근하기
+
+(*pDog).getAge(); //반드시 괄호를 사용해야함.
+pDog->getAge(); // 포인터로 멤버 접근할 때 -> 사용
+
+
+#include <iostream>
+#include <string>
+using namespace std;
+class Dog
+{
+private:
+    int *pAge;
+    int *pWeight;
+
+public:
+    Dog()
+    {
+        pAge = new int{1};     //배열을 동적으로 만듬
+        pWeight = new int{10}; //배열을 동적으로 만듬
+    }
+    ~Dog()
+    {
+        delete pAge;
+        delete pWeight;
+    }
+    int getAge() { return *pAge; }
+    void setAge(int a) { *pAge = a; }// pAge가 가리키는 값에 a를 대입
+    int getWeight() { return *pWeight; }
+    void setWeight(int w) { *pWeight = w; }
+};
+
+int main()
+{
+    Dog *pDog = new Dog; //포인터 변수의 크기는 8바이트(64비트 컴퓨터에서)
+    cout << sizeof(*pDog);// 2개의 인스턴스가있음, 따라서 pDog가 포인트하는 인스턴스의 크기는 16이다
+    cout << "강아지의 나이: " << pDog->getAge() << endl;
+    cout << "강아지의 무게: " << pDog->getWeight() << endl;
+    pDog->setAge(3);
+    pDog->setWeight(20);
+    cout << "강아지의 나이: " << pDog->getAge() << endl;
+    cout << "강아지의 무게: " << pDog->getWeight() << endl;
+    delete pDog;
+    return 0;
+}
+
+
+
+
+--------------------
+■ this (c++과 달리 포인터 멤버변수에 접근할때 JS, PYTHON에서는 꼭 써야함. (js)this. (python)self. 안쓰면 지역변수로해석)
+ 모든 객체가 가지는 멤버 변수
+ 자신(인스턴스)에 대한 포인터 변수
+ 멤버 변수와 매개 변수의 이름이 같은 경우 멤버 변수를 지칭하기 위해 사용
+ex) int getAge() { return age;} 1. 지역변수찾는다 2. 멤버변수 찾는다 3. 전역변수 찾는다 4. 에러발생
+보통 가독성을위해 지역변수age 멤버변수 age 이런식으로 쓴다 하지만 아래와같은 문제가 발생함
+void setAge(int age) { age = age; } 변수 age, age 1. 지역변수를 찾는다 2. 지역변수가있다. 3. 멤버변수 age가 초기화가 안된다
+따라서 this를 쓴다
+void setAge(int age) { this->age = age; } 지역변수와 멤버변수에 같은 이름을 썼을때 두개를 구분하기위해 사용
+
+---------------------
+■ const 포인터
+ const int *p1; //상수에 대한 포인터. 값이 상수임. 값을 바꿀 수 없음<<<<<======중요 개중요 이것만 기억해도됨
+ int * const p2; // 포인터가 상수임. 다른 주소로 바꿀 수 없음
+ const int * const p3; // 포인터와 값 모두 상수
+---------------------------
+
+heap에 있는 데이터는 파괴자가 정리해줌.
+문자열 사용할때 void print(string t) [char로는 print(str)이 불가능]을 사용하면   print(test),;print(pstr);, print(str); 세가지로 출력가능함.
+#include<iostream>
+#include<string>
+using namespace std;
+
+void print(string t){
+    cout << t << endl;
+}
+///문자열을 나타내는 방법 3가지
+int main(int argc, char const *argv[]){
+   char test[]="HELLO";// 문자열 배열
+   char *pstr="C++"; // 문자열 포인터
+   string str= "World";//스트링 객체
+
+   cout <<test <<endl;
+   cout <<pstr <<endl;
+   cout <<str <<endl; 
+   cout <<sizeof(str) <<endl; // 항상 32바이트 
+   print(test);
+   print(pstr);
+   print(str);
+
+   return 0;
+}
+
+문자열은 문자열의 끝에 null문자가 있음
+문자배열은 null문자가없

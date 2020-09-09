@@ -1,0 +1,102 @@
+-----------상속
+
+코드의 중복을 막기위해사용 함수보다 위임.
+
+상속을 해주는 부모클래스는 superclass 라고함
+
+자식클래스는 subclass
+
+코드의 중복은 수정을할때 번거로움.
+
+
+*추상화 : 부모클래스를 정의하는것
+
+Car 
+speedUP()
+speedDown()
+
+                                           =====> vehicle  
+				     speedUP()
+Truck    				     speedDown()
+speedUP()
+speedDown()
+
+Bus
+speedUP()
+speedDown()
+
+
+
+
+상속방법 (  클래스 : 부모클래스) 파이썬의 상속은 Car(vehicle) 자바는 Car extends Vehicle
+
+class Vehicle { ..............}
+class Car : public Vehicle {..............}   ///////보통 public 으로 상속받음
+class Truck : public Vehicle {................}
+
+스크립트언어는 함수명으로 함수구분을 하여 오버로드가 불가능 __init__(self) super()__init__();
+c++은 매개변수로 구분을 하기때문에 오버로드가 가능하고 여러개의 생성자가 가능함
+
+-부모클래스의 생성자를 지정하는 방법
+자식클래스의 생성자() : 부모클래스의 생성자() //// :뒤에 올수있는것 1.멤버 초기화 리스트, 2.상속받을 부모 클래스
+{
+}
+
+---
+#include <iostream>
+#include <string>
+using namespace std;
+class Shape //// :public object() 가 생략됨// object는 최상위클래스로써 항상 포함되어있음.
+{
+    int x, y;
+
+public:
+    Shape()
+    {
+        cout << "Shape() 생성자" << endl;
+    }
+    Shape(int xloc, int yloc) : x(xloc), y(yloc)
+    {
+        cout << "Shape(xloc, yloc) 생성자" << endl;
+    }
+    ~Shape()
+    {
+        cout << "~Shape() 소멸자" << endl;
+    }
+};
+class Rectangle : public Shape
+{
+    int width, height;
+
+public:
+    Rectangle() //// : 없음없음 이면 뒤에 디폴트 생산자 shape()가 자동으로 추가되어있음 //생성자 정의법 1 ///부모클래스에 디폴트 생성자가 있어야 사용가능 Shape() {cout << "Shape() 생성자" << endl;}
+    {
+        cout << "Rectangle() 생성자" << endl;
+    }
+    Rectangle(int x, int y, int w, int h) : Shape(x, y), width(w), height(h) //상속받은 x,y 초기화, 본인꺼 w,h 초기화 //생성자 정의법 2
+    {
+        cout << "Rectangle(x, y, w, h) 생성자" << endl;
+    }
+    ~Rectangle()
+    {
+        cout << "~Rectangle() 소멸자" << endl;
+    }
+};
+
+int main(int argc, char const *argv[])
+{
+    Rectangle r1;
+    cout << endl;
+    Rectangle r2(0, 0, 100, 100);
+    cout << endl;
+    return 0;
+}
+---
+
+오버라이드
+
+부모와 똑같은 이름의 함수를 상속받은 자식클래스에서 재정의 하는것(매개변수까지 같아야함)
+
+오버로드
+
+부모와 똑같은 이름의 함수를 상속받은 자식클래스에서 재정의하는데 매개변수를 추가하면 새로운 함수로 오버로드가됨

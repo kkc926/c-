@@ -7,6 +7,10 @@
  객체의 참조자가 함수의 매개 변수로 전달되는 경우 call by reference
  함수가 객체를 반환하는 경우 
 
+■ 객체가 함수의 매개변수로 전달되는 경우
+ 함수의 인수는 기본적으로 값에 의해 매개 변수로 전달
+ 객체일 때도 마찬가지 --> 객체가 복사됨
+
 #include<iostream>
 #include<string>
 using namespace std;
