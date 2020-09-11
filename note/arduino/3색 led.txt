@@ -1,0 +1,19 @@
+3색 led------
+analogWrite(pin_name, 숫자0~255)
+
+
+
+const int redPin = 11; // RED
+const int greenPin = 10; // GREEN
+const int bluePin = 9; // BLUE
+void setup() {
+randomSeed(analogRead(A0));
+}
+void loop() {
+analogWrite(redPin, random(256));
+analogWrite(greenPin, random(256));
+analogWrite(bluePin, random(256));
+delay(1000);
+}
+
+---------------------
