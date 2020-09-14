@@ -1,18 +1,33 @@
+#include <Wire.h>
 #include <LiquidCrystal_I2C.h>
-// I2C 주소, 칸 수(X), 줄 수(Y)
-LiquidCrystal_I2C lcd(0x27, 16, 2); //디바이스의 주소 0x27번지, 16칸, 2줄
+
 void setup()
 {
-    lcd.init();          // LCD 초기화 // 안하면 출력안됨.
-    lcd.backlight();     // 백라이트 켜기
-    lcd.setCursor(3, 0); // 커서 위치 설정 (x,y)
-    // 문자열 출력
-    lcd.print("Hello, world!");
+    Wire.begin();
+    Serial.begin(9600);
 }
 void loop()
 {
-    lcd.backlight();
-    delay(500);
-    lcd.noBacklight();
-    delay(500);
+    byte error, address;
+    int nDevices = 0;
+    Serial.println("Start Scanning...");
+    for (address = 1; address < 127; address++)
+    {
+        // 1바이트의 의미 없는 데이터를 전송
+        Wire.beginTransmission(address);
+        error = Wire.endTransmission();
+
+        if (error == 0)
+        {
+            Serial.print("I2C device found at address 0x");
+            if (address < 16)
+                Serial.print("0");
+            Serial.print(address, HEX);
+            Serial.println();
+            nDevices++;
+        }
+    }
+    if (nDevices == 0)
+        Serial.println("No I2C devices found\n");
+    delay(5000); // 5초 후 다시 스캐닝
 }
