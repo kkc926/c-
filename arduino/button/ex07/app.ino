@@ -12,7 +12,7 @@ void loop()
 {
     state_current = digitalRead(pin_button);
     if (!state_current)
-    { // ?? ??
+    {
         if (state_previous == true)
         {
             count++;
