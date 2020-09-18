@@ -19,3 +19,12 @@ Mosquitto// MQTT 브로커
 
 토픽명은 임의로 지정가능
 구독자와 출판사와 같아야함
+
+
+
+여러개의 아두이노를 사용할땐
+connect(ClientId) clientid를 꼭 설정해야함
+
+토픽지정
+client.publish("home/livingroom/led", message);
+

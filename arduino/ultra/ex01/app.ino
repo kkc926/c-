@@ -1,5 +1,7 @@
 int echoPin = 2;
 int triggerPin = 3;
+
+
 void setup()
 {
     Serial.begin(9600);

@@ -25,21 +25,16 @@ void loop()
             state = data - '0' - 1; //LED 인덱스로 변환// 문자를 숫자로 바꾸기 위해 '0'을 뺀다. '1'-'0'=1
             Serial.print("LED ");
             Serial.print(state + 1);
-Serial.println("i On...");
+            Serial.println("i On...");
         }
         else
         {
             Serial.println("* Invalid LED number ...");
-            state =
-                -1;
+            state =-1;
         }
-        for (int
-                 i = 0;
-             i < 4;
-             i++)
+        for (int i = 0; i < 4; i++)
         {
-            if (
-                i == state)
+            if (i == state)
             {
                 Serial.print("O ");
                 digitalWrite(pins[i], HIGH);
