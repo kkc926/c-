@@ -1,45 +1,40 @@
-#include <WiFiEsp.h>
 #include <SoftwareSerial.h>
-SoftwareSerial softSerial(2, 3);       // RX, TX
-char ssid[] = "KT_GiGA_2G_Wave2_A8D7"; // your network SSID (name)
-char pass[] = "zf3cbb5696";            // your network password
-int status = WL_IDLE_STATUS;           // the Wifi radio's status
+#include <Led.h>
 
-void setup()
-{
-    Serial.begin(115200);
-    softSerial.begin(9600);
-    WiFi.init(&softSerial);            /////중요
-    if (WiFi.status() == WL_NO_SHIELD) //exp가 안꽂혀있다.
-    {
-        Serial.println("WiFi shield not present");
-        while (true)
-            ;
-    }
-    while (status != WL_CONNECTED)
-    {
-        Serial.print("Attempting to connect to WPA SSID: ");
-        Serial.println(ssid);
-        status = WiFi.begin(ssid, pass); ////////중요
-    }
-    Serial.println("You're connected to the network");
-    printWifiStatus();
+
+  
+SoftwareSerial BTSerial(2,3); // SoftwareSerial(RX, TX)
+
+String myString="";   //받는 문자열
+Led led(13);
+ 
+void setup() {
+  Serial.begin(9600);   //시리얼모니터 
+  BTSerial.begin(9600); //블루투스 시리얼 개방
+
 }
-void loop()
-{
-}
-void printWifiStatus()
-{
-    // print the SSID of the network you're attached to
-    Serial.print("SSID: ");
-    Serial.println(WiFi.SSID());
-    // print your WiFi shield's IP address
-    IPAddress ip = WiFi.localIP();
-    Serial.print("IP Address: ");
-    Serial.println(ip);
-    // print the received signal strength
-    long rssi = WiFi.RSSI();
-    Serial.print("Signal strength (RSSI):");
-    Serial.print(rssi);
-    Serial.println(" dBm");
+void loop() {
+  while(BTSerial.available()) {  //BTSerial에 전송된 값이 있으면
+
+    //BTSerial int 값을 char 형식으로 변환
+    char myChar = (char)BTSerial.read(); 
+
+    //수신되는 문자를 myString에 모두 붙임 (1바이트씩 전송되는 것을 연결)
+    myString+=myChar;   
+    delay(5);   //수신 문자열 끊김 방지
+  }
+
+  if(!myString.equals("")) { //myString 값이 있다면
+    Serial.println("input value: "+myString); 
+    BTSerial.println("input value: "+myString); 
+    
+    //ON이면 13번 LED 켜고 --------실제 수신 데이터 on\r\n
+    //OFF이면 13번 LED 끄고 --------실제 수신 데이터 off\r\n
+    if(myString == "on\r\n"){
+      led.on();
+    }else if (myString=="off\r\n"){
+      led.off();
+    }
+    myString="";//myString 변수값 초기화
+  }
 }

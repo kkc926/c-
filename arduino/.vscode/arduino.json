@@ -1,6 +1,6 @@
 {
     "board": "arduino:avr:uno",
-    "sketch": "etc_sensor\\PIR_sensor\\app.ino",
+    "sketch": "bluetooth\\ex04\\app.ino",
     "port": "COM3",
     "programmer": "AVRISP mkII"
 }
