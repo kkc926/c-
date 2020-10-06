@@ -1,6 +1,6 @@
 {
     "board": "arduino:avr:uno",
-    "sketch": "bluetooth\\ex04\\app.ino",
+    "sketch": "CAR.EX\\app.ino",
     "port": "COM3",
     "programmer": "AVRISP mkII"
 }

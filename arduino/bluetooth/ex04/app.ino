@@ -10,7 +10,7 @@ void received(String msg){
 	//msg처리 후 
 	//처리 결과를 응답하려고 합니다.
 	if (msg == "on"){
-
+		
 	}else if(msg =="off"){
 		
 	}
