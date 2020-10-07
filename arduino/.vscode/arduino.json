@@ -1,6 +1,6 @@
 {
     "board": "arduino:avr:uno",
-    "sketch": "CAR.EX\\app.ino",
+    "sketch": "motor\\car\\app.ino",
     "port": "COM3",
     "programmer": "AVRISP mkII"
 }
