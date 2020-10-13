@@ -32,7 +32,7 @@ client.on_connect = on_connect
 client.on_message = on_message
 try :
     # 3. 브로커 연결
-    client.connect("mongodb://172.30.1.34:27017/")
+    client.connect("localhost")
     # 4. 메시지 루프 - 이벤트 발생시 해당 콜백 함수 호출됨
     client.loop_forever()
     # client.loop_start() #새로운 스레드를 기동해서 운영 - daemon 스레드 thread.setDaemon(True)

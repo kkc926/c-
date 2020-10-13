@@ -37,4 +37,5 @@ void dust_check()
     Serial.print(",");
     Serial.print(dust_level);
     com.print(0,"D","L",dustDensity,dust_level);
+    Serial.print("\n");
 }

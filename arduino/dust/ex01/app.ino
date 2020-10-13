@@ -8,7 +8,6 @@ MiniCom com;
 
 void setup()
 {
-    com.init();
     pinMode(DUST_PIN, INPUT);
     com.setInterval(sampletime_ms, dust_check);
 }
@@ -32,9 +31,4 @@ void dust_check()
     else if (dustDensity > 80) dust_level = 2;
     else if (dustDensity > 30) dust_level = 1;
     else dust_level = 0;
-
-    Serial.print(dustDensity);
-    Serial.print(",");
-    Serial.print(dust_level);
-    com.print(0,"D","L",dustDensity,dust_level);
 }
