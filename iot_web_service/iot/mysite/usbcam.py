@@ -7,7 +7,7 @@ class USBCam:
         self.framerate = framerate
 
 
-        self.cap = cv2.VideoCapture(0) #0번카메라
+        self.cap = cv2.VideoCapture(1) #0번카메라
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,self.size[0])
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT,self.size[1])
 
@@ -15,7 +15,7 @@ class USBCam:
     def snapshot(self):#jpeg 이미지 1장 리턴
         retval, frame = self.cap.read() #프레임 캡쳐, frame:numpy 배열 - BGR
         if retval : 
-            _, jpg = cv2.imencode('JPEG',frame)
+            _, jpg = cv2.imencode('.JPEG',frame)
             return jpg.tobytes()
 
 class MJpegStreamCam(USBCam):
@@ -26,12 +26,16 @@ class MJpegStreamCam(USBCam):
     def __iter__(self): #열거가능 객체이기 위한 조건 for x in MJpegStreamCam():
         while True:
              retval, frame = self.cap.read()
-             _, jpg = cv2.imencode('JPEG',frame)
-        yield(
-            b'--myboundary\n'
-            b'Content-tupe:image/jpeg\n'
-            b'Content-Length: '+ f"{len(jpg)}".encode() + b'\n'
-            b'\n' + jpg.tobytes +b'\n'
-        )
+             _, jpg = cv2.imencode('.JPEG',frame)
+    def __iter__(self): #열거가능 객체이기 위한 조건 for x in MJpegStreamCam():
+        while True:
+            retval, frame = self.cap.read()
+            _, jpg = cv2.imencode('.JPEG',frame)
+            yield (
+                b'--myboundary\n'
+                b'Content-tupe:image/jpeg\n'
+                b'Content-Length: '+ f"{len(jpg)}".encode() + b'\n'
+                b'\n' + jpg.tobytes() +b'\n'
+                )
             
 
