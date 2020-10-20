@@ -1,0 +1,41 @@
+
+pcm.btspeaker {
+  type plug
+  slave.pcm{
+    type bluealsa
+    device "E8:07:BF:5E:83:18"
+    profile "a2dp"
+
+  }
+  hint{
+    show on
+    description "Mi"
+  }
+}
+
+pcm.!default {
+  type asym
+   playback.pcm {
+     type plug
+     slave.pcm "hw:0,0"
+   }
+   capture.pcm {
+     type plug
+     slave.pcm "hw:1,0"
+   }
+}
+pcm.output {
+	type hw
+	card 0
+}
+
+ctl.!default {
+	type hw
+	card 0
+}
+
+
+pcm.input {
+	type hw
+	card 2
+}
