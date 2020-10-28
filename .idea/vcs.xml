@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/arduino" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/arduino/MMM-Assistant2Display" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/raspberry" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/tf/models" vcs="Git" />
+  </component>
+</project>
