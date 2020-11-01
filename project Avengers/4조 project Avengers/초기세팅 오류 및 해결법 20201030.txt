@@ -1,0 +1,31 @@
+1. samba
+ -> pi@raspberrypi:~ $ sudo smbpasswd -a pi
+
+2. wifi
+ -> reader or lcd
+
+3. speaker
+ -> aplay -l 로 card번호, device번호 확인
+ -> .asoundrc 에서 card번호 작성
+ -> 업데이트 sudo apt-get update
+ -> sudo raspi-config 세팅
+ -> speaker-test -t wav OR speaker-test -c2 -twav -l7 -D plughw:1,0
+ 
+4. mic 
+ -> arecord -l 로 card번호, device번호 확인
+ -> .asoundrc 에서 card번호 작성
+ -> arecord --device=plughw:2,0 test.wav
+ -> arecord --device=plughw:2,0 로 녹음하고 aplay test.wav 로 플레이
+ -> 메인페이지에서 음향 우클릭-> 마이크 볼륨 체크
+
+5.MMM-GoogleAssistant
+ -> https://blog.naver.com/cosmosjs/221990876713 참조 5,6번 (본인 api설정)
+ -> cd ~/MagicMirror/modules/MMM-GoogleAssistant/ 
+    npm run update
+ -> node auth_and_test.js 로 활성화 확인 (활성화가 안되어있으면 자비스가 호출 되어도 바로 종료됨.)
+
+
+
+
+
+ ->coffee - teshy // Coffee Quinn Xcii, Marc E. Bassy 현수 픽
