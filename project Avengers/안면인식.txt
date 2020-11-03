@@ -1,0 +1,32 @@
+안면인식
+
+필요한것
+
+1. 파이썬 가상환경 설정 cd ~ 
+    pyvenv MagicMirror
+    cd MagicMirror
+    source bin/activate (활성화)
+2. pip3 install face_recognition
+   pip3 install numpy
+   pip3 install opencv-python
+   pip3 install matplotlib
+   deactivate
+
+3. 안면인식 모듈
+    클론 git clone https://github.com/EbenKouao/MMM-Face-Recognition-SMAI.git
+    cd MMM-face-rec
+    npm install
+
+4. config.js에 추가
+    {
+  module: "MMM-Face-Recognition-SMAI",
+  position: "top_right",
+  config: {
+    //prompt: "Put in your own text"
+  }
+  
+  
+}
+
+5. python3 /home/pi/MagicMirror/modules/MMM-Face-Recognition-SMAI/MMM-Face-Recognition-SMAI.py
+
