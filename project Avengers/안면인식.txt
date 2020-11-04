@@ -1,4 +1,4 @@
-안면인식
+안면인식(안면인식 선행 작업 후에 follow up 할것 )
 
 필요한것
 
@@ -12,21 +12,35 @@
    pip3 install matplotlib
    deactivate
 
+
 3. 안면인식 모듈
-    클론 git clone https://github.com/EbenKouao/MMM-Face-Recognition-SMAI.git
-    cd MMM-face-rec
-    npm install
+   git clone https://github.com/jimbydude/MMM-Face-Multi-User-Recognition-SMAI.git
+   cd MMM-Face-Multi-User-Recognition-SMAI
+   npm install
+
+
 
 4. config.js에 추가
-    {
-  module: "MMM-Face-Recognition-SMAI",
+{
+  module: "MMM-Face-Multi-User-Recognition-SMAI",
   position: "top_right",
   config: {
-    //prompt: "Put in your own text"
+    useMMMFaceRecoDNN: true
   }
+},
   
   
 }
 
-5. python3 /home/pi/MagicMirror/modules/MMM-Face-Recognition-SMAI/MMM-Face-Recognition-SMAI.py
+5. 사진넣기 (로그인시 화면에 표시될 사진)
+    dataset에 만든 유저 폴더와 같은 이름의 jpg파일을 public폴더에 만들것 
+    ex) dataset/yongin/img01.jpg~img10.jpg 이면 
+        public/yongin.jpg
+
+
+
+
+
+
+kkc926@naver.com
 
