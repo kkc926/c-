@@ -9,6 +9,7 @@
    pip3 install face_recognition
    pip3 install imutils
    pip3 install numpy
+   pip3 install opencv-python
 
 
 2. 모듈(로그인된 유저등급을 정하고 그에 따라 보여줄 모듈을 지정하는 모듈)
