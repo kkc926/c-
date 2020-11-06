@@ -1,5 +1,5 @@
 #include <DHT.h> // DHT.h 라이브러리를 포함한다
-#define DHTPIN 3
+#define DHTPIN A3
 #define DHTTYPE DHT11
 DHT dht(DHTPIN, DHTTYPE); // DHT설정 - dht (디지털3, dht11)
 void setup()

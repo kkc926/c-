@@ -1,8 +1,8 @@
 #include <WiFiEsp.h>
 #include <SoftwareSerial.h>
 SoftwareSerial softSerial(2, 3);       // RX, TX
-char ssid[] = "KT_GiGA_2G_Wave2_A8D7"; // your network SSID (name)
-char pass[] = "zf3cbb5696";            // your network password
+char ssid[] = "yonginDT"; // your network SSID (name)
+char pass[] = "12345678";            // your network password
 int status = WL_IDLE_STATUS;           // the Wifi radio's status
 
 void setup()
