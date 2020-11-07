@@ -2,8 +2,8 @@
 
 sudo pip3 install paho-mqtt
 
-mosquitto_sub -h localhost -t sensor/#
-mosquitto_pub -h localhost -t sensor/greet -m "안녕하세요"
+mosquitto_sub -h localhost -t sensor/# <<구독
+mosquitto_pub -h localhost -t sensor/greet -m "안녕하세요" <<발행
 
 
 
