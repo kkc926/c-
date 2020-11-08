@@ -3,10 +3,11 @@
 #include "DHT.h"          // Librairie des capteurs DHT
 WifiUtil wifi(2, 3);
 
-//#define wifi_ssid "yonginDT"
-//#define wifi_password "12345678"
-const char SSID[] = "KT_GiGA_2G_Wave2_A8D7";
-const char PASSWORD[] = "zf3cbb5696";
+//const char SSID[] = "KT_GiGA_2G_Wave2_A8D7";
+//const char PASSWORD[] = "zf3cbb5696";
+const char SSID[] = "yonginDT";
+const char PASSWORD[] = "12345678";
+
 
 
 
