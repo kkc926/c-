@@ -11,7 +11,8 @@ const char PASSWORD[] = "12345678";
 
 
 
-#define mqtt_server "172.30.1.34"
+//#define mqtt_server "172.30.1.34"
+#define mqtt_server "192.168.0.110"
 #define mqtt_user "localhost"      // if exist
 #define mqtt_password ""  //idem
 
