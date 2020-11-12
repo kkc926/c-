@@ -2,18 +2,19 @@
 #include <PubSubClient.h>
 #include "DHT.h"          // Librairie des capteurs DHT
 WifiUtil wifi(2, 3);
-
-const char SSID[] = "KT_GiGA_2G_Wave2_A8D7";
-const char PASSWORD[] = "zf3cbb5696";
-//const char SSID[] = "yonginDT";
-//const char PASSWORD[] = "12345678";
+//
+//const char SSID[] = "KT_GiGA_2G_Wave2_A8D7";
+//const char PASSWORD[] = "zf3cbb5696";
+const char SSID[] = "yonginDT";
+const char PASSWORD[] = "12345678";
 int relay_pin = 8;
 int led_pin = 13;
 
 
-
-
-#define mqtt_server "172.30.1.34"
+//
+//
+//#define mqtt_server "172.30.1.34"
+#define mqtt_server "192.168.0.110"
 #define mqtt_user "localhost"      // if exist
 #define mqtt_password ""  //idem
 
@@ -36,7 +37,7 @@ void setup() {
 //  setup_wifi();           //Connect to Wifi network
   client.setServer(mqtt_server, 1883);    // Configure MQTT connexion
   client.setCallback(callback);           // callback function to execute when a MQTT message   
-  dht.begin();
+
   pinMode(relay_pin,OUTPUT);
   pinMode(led_pin,OUTPUT);  
   digitalWrite(led_pin,HIGH);
@@ -68,7 +69,7 @@ void reconnect() {
 
   while (!client.connected()) {
     Serial.print("Connecting to MQTT broker ...");
-    if (client.connect("ESP8266Client", mqtt_user, mqtt_password)) {
+    if (client.connect("A2", mqtt_user, mqtt_password)) {
       Serial.println("OK");
     } else {
       Serial.print("KO, error : ");
@@ -94,19 +95,9 @@ void loop() {
   if (now - lastMsg > 2000) {
     lastMsg = now;
     // Read humidity
-    float h = dht.readHumidity();
-    // Read temperature in Celcius
-    float t = dht.readTemperature();
-  
-
-  if (t>28 || h>10){
-    digitalWrite(relay_pin,HIGH);
     
-  }
-  else{
-    digitalWrite(relay_pin,LOW);
-  }
-  }
+    // Read temperature in Celcius
+
 }
 
 // MQTT callback function
