@@ -9,22 +9,31 @@
  */
 #define BLYNK_PRINT Serial
 #define EspSerial Serial1
-
+#include <WiFiEsp.h>
+#include <SimpleTimer.h>
 #include <SoftwareSerial.h>
 #include<SPI.h>
 #include <ESP8266_Lib.h>
 #include <BlynkSimpleShieldEsp8266.h>
+#include <PubSubClient.h>
+#include <WifiUtil.h>
 
 // You should get Auth Token in the Blynk App.
 char auth[] = "68O8QXywAHetPvqMhh0iH56GYVDbX2IQ";
-
+SoftwareSerial EspSerial(2, 3); // RX, TX of ESP8266
 // Your WiFi credentials.
 // Set password to "" for open networks.
-char ssid[] = "yonginDT";
-char pass[] = "12345678";
+SoftwareSerial softSerial(2, 3);           // RX, TX
 
+const char ssid[] = "yonginDT";               // 네트워크 SSID
+const char password[] = "12345678";       // 비밀번호
+const char mqtt_server[] = "192.168.137.176"; // 서버 주소
 
-SoftwareSerial EspSerial(2, 3); // RX, TX of ESP8266
+SimpleTimer timer;
+WifiUtil wifi1(2, 3);
+WiFiEspClient espClient;
+PubSubClient client(espClient);
+
 
 String s,x;    //to store incoming text ingredient
 
@@ -79,13 +88,65 @@ void setup()
   pinMode(7,OUTPUT);       //Pin 7 is set to output
   pinMode(8,OUTPUT);       //Pin 8 is set to output
   // Set ESP8266 baud rate
-  EspSerial.begin(ESP8266_BAUD);
+  
   delay(10);
+  wifi1.init(ssid, password);
  
-  Blynk.begin(auth, wifi, ssid, pass);
+  Blynk.begin(auth, wifi, ssid, password);
+  mqtt_init();
+
+
 }
 
 void loop()
 {
   Blynk.run();
+      if (!client.connected()) {  // MQTT가 연결 X
+        reconnect();
+    }
+    client.loop();
+    timer.run();
+}
+
+
+
+void callback(char *topic, byte *payload, unsigned int length) {
+    payload[length] = NULL;
+    char *message = payload;
+
+    if (strcmp("1", message) == 0) {
+        Serial.print("ok");
+        Serial.print(message);
+    } else {
+        Serial.print("no");
+        Serial.print(message);
+    }
+
+    Serial.print(topic);
+    Serial.print(" : ");
+    Serial.println(message);
+}
+
+void mqtt_init() {
+    client.setServer(mqtt_server, 1883);
+    // subscriber인경우 메시지 수신시 호출할 콜백 함수 등록
+    client.setCallback(callback);
+}
+// MQTT 서버에 접속될 때까지 재접속 시도
+void reconnect() {
+
+    while (!client.connected()) {
+        Serial.print("Attempting MQTT connection...");
+        
+        if (client.connect("ESP8266Client")) {
+            Serial.println("connected");
+            // subscriber로 등록
+            client.subscribe("iot/home/#",1);  // 구독 신청
+        } else {
+            Serial.print("failed, rc=");
+            Serial.print(client.state());
+            Serial.println(" try again in 5 seconds");
+            delay(5000);
+        }
+    }
 }
