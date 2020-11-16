@@ -8,7 +8,7 @@ SoftwareSerial softSerial(2, 3);           // RX, TX
 
 const char ssid[] = "yonginDT";               // 네트워크 SSID
 const char password[] = "12345678";       // 비밀번호
-const char mqtt_server[] = "192.168.137.98"; // 서버 주소
+const char mqtt_server[] = "192.168.137.1"; // 서버 주소
 
 // MQTT용 WiFi 클라이언트 객체 초기화
 WifiUtil wifi(2, 3);
