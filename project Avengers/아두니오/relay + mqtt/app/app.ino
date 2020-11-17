@@ -1,152 +1,123 @@
-/** Voice controlled house lights with Google Assitant
- *  Instructable contest
- *  Mridul Mahajan
- */
-/*************************************************************
-  Download latest Blynk library here:
-    https://github.com/blynkkk/blynk-library/releases/latest
-
- */
-#define BLYNK_PRINT Serial
-#define EspSerial Serial1
-#include <WiFiEsp.h>
-#include <SimpleTimer.h>
-#include <SoftwareSerial.h>
-#include<SPI.h>
-#include <ESP8266_Lib.h>
-#include <BlynkSimpleShieldEsp8266.h>
+#include "WifiUtil.h"
 #include <PubSubClient.h>
-#include <WifiUtil.h>
+#include "DHT.h"          // Librairie des capteurs DHT
+WifiUtil wifi(2, 3);
 
-// You should get Auth Token in the Blynk App.
-char auth[] = "68O8QXywAHetPvqMhh0iH56GYVDbX2IQ";
-SoftwareSerial EspSerial(2, 3); // RX, TX of ESP8266
-// Your WiFi credentials.
-// Set password to "" for open networks.
-SoftwareSerial softSerial(2, 3);           // RX, TX
+const char SSID[] = "yonginDT";
+const char PASSWORD[] = "12345678";
 
-const char ssid[] = "yonginDT";               // 네트워크 SSID
-const char password[] = "12345678";       // 비밀번호
-const char mqtt_server[] = "192.168.137.176"; // 서버 주소
+#define mqtt_server "192.168.137.176"
+#define mqtt_user "localhost"      // if exist
+#define mqtt_password ""  //idem
 
-SimpleTimer timer;
-WifiUtil wifi1(2, 3);
+#define temperature_topic "iot/temperature"  //Topic temperature
+#define humidity_topic "iot/humidity"        //Topic humidity
+
+//Buffer to decode MQTT messages
+char message_buff[100];
+
+long lastMsg = 0;   
+long lastRecu = 0;
+bool debug = false;  //Display log message if True
+
+#define DHTPIN A3    // DHT Pin 
+#define HEATER1 A2    // Heater Led Pin
+#define HEATER2 13
+
+// Un-comment you sensor
+#define DHTTYPE DHT11       // DHT 11 
+
+// Create abjects
+DHT dht(DHTPIN, DHTTYPE);     
 WiFiEspClient espClient;
 PubSubClient client(espClient);
 
-
-String s,x;    //to store incoming text ingredient
-
-BLYNK_WRITE(V0)     // it will run every time a string is sent by Blynk app
-{
-  s=param.asStr();
-  Serial.print(s); //string sent by Blynk app will be printed on Serial Monitor
-   if(s=="on")
-  {
-    digitalWrite(7, LOW);       //Pin 7 has been set in setup()
-//    digitalWrite(8, LOW);       //Pin 7 has been set in setup()
-  }
-  else if(s=="off")
-  {
-    digitalWrite(7, HIGH);
-//    digitalWrite(8, HIGH);
-    
-  }
-  else{
-    Serial.print("Say on or off");
-  }
-}
-BLYNK_WRITE(V1)     // it will run every time a string is sent by Blynk app
-{
-  x=param.asStr();
-  Serial.print(x); //string sent by Blynk app will be printed on Serial Monitor
-   if(x=="on")
-  {
-//    digitalWrite(7, LOW);       //Pin 7 has been set in setup()
-    digitalWrite(8, LOW);       //Pin 7 has been set in setup()
-  }
-  else if(x=="off")
-  {
-//    digitalWrite(7, HIGH);
-    digitalWrite(8, HIGH);
-    
-  }
-  else{
-    Serial.print("Say on or off");
-  }
-}
-
-// Your ESP8266 baud rate:
-#define ESP8266_BAUD 9600
-
-ESP8266 wifi(&EspSerial);
-
-void setup()
-{
-  // Debug console
+void setup() {
   Serial.begin(9600);
-  pinMode(7,OUTPUT);       //Pin 7 is set to output
-  pinMode(8,OUTPUT);       //Pin 8 is set to output
-  // Set ESP8266 baud rate
-  
-  delay(10);
-  wifi1.init(ssid, password);
- 
-  Blynk.begin(auth, wifi, ssid, password);
-  mqtt_init();
-
-
+  wifi.init(SSID, PASSWORD);     
+//  setup_wifi();           //Connect to Wifi network
+  client.setServer(mqtt_server, 1883);    // Configure MQTT connexion
+  client.setCallback(callback);           // callback function to execute when a MQTT message   
+  pinMode(HEATER1,OUTPUT);
+  pinMode(HEATER2,OUTPUT);
+  dht.begin();
 }
 
-void loop()
-{
-  Blynk.run();
-      if (!client.connected()) {  // MQTT가 연결 X
-        reconnect();
-    }
-    client.loop();
-    timer.run();
-}
-
-
-
-void callback(char *topic, byte *payload, unsigned int length) {
-    payload[length] = NULL;
-    char *message = payload;
-
-    if (strcmp("1", message) == 0) {
-        Serial.print("ok");
-        Serial.print(message);
-    } else {
-        Serial.print("no");
-        Serial.print(message);
-    }
-
-    Serial.print(topic);
-    Serial.print(" : ");
-    Serial.println(message);
-}
-
-void mqtt_init() {
-    client.setServer(mqtt_server, 1883);
-    // subscriber인경우 메시지 수신시 호출할 콜백 함수 등록
-    client.setCallback(callback);
-}
-// MQTT 서버에 접속될 때까지 재접속 시도
 void reconnect() {
-
-    while (!client.connected()) {
-        Serial.print("Attempting MQTT connection...");
-        
-        if (client.connect("ESP8266Client")) {
-            Serial.println("connected");
-            // subscriber로 등록
-            client.subscribe("iot/home/#",1);  // 구독 신청
-        } else {
-            Serial.print("failed, rc=");
-            Serial.print(client.state());
-            Serial.println(" try again in 5 seconds");
-            delay(5000);
-        }
+  while (!client.connected()) {
+    Serial.print("Connecting to MQTT broker ...");
+    if (client.connect("ESP8266Client", mqtt_user, mqtt_password)) {
+      Serial.println("OK");
+    } else {
+      Serial.print("KO, error : ");
+      Serial.print(client.state());
+      Serial.println(" Wait 5 secondes before to retry");
+      delay(5000);
     }
+  }
+}
+
+void loop() {
+  if (wifi.check())
+  { // WIFI 연결 확인
+      ;
+  }
+  if (!client.connected()) {
+    reconnect();
+  }
+  client.loop();
+
+  long now = millis();
+  // Send a message every minute
+  if (now - lastMsg > 2000) {
+    lastMsg = now;
+    // Read humidity
+    float h = dht.readHumidity();
+    // Read temperature in Celcius
+    float t = dht.readTemperature();
+
+    // Oh, nothing to send
+    if ( isnan(t) || isnan(h)) {
+      Serial.println("Please check DHT sensor !");
+      return;
+    }
+    
+    if(h < 25.50) {
+        digitalWrite(HEATER1, HIGH);
+        digitalWrite(HEATER2, HIGH);
+    } else {
+        digitalWrite(HEATER1, LOW);
+        digitalWrite(HEATER2, LOW);
+    }
+  
+      Serial.print("Temperature : ");
+      Serial.print(t);
+      Serial.print(" | Humidity : ");
+      Serial.println(h);
+    
+    client.publish(temperature_topic, String(t).c_str(), true);   // Publish temperature on temperature_topic
+    client.publish(humidity_topic, String(h).c_str(), true);      // and humidity
+  }
+
+}
+
+// MQTT callback function
+// D'après http://m2mio.tumblr.com/post/30048662088/a-simple-example-arduino-mqtt-m2mio
+void callback(char* topic, byte* payload, unsigned int length) {
+
+  int i = 0;
+  if ( debug ) {
+    Serial.println("Message recu =>  topic: " + String(topic));
+    Serial.print(" | longueur: " + String(length,DEC));
+  }
+  // create character buffer with ending null terminator (string)
+  for(i=0; i<length; i++) {
+    message_buff[i] = payload[i];
+  }
+  message_buff[i] = '\0';
+
+  String msgString = String(message_buff);
+  if ( debug ) {
+    Serial.println("Payload: " + msgString);
+  }
 }
