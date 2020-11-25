@@ -2,7 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ed293582-e4ab-4d30-a8e7-722583dc32bc" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/tf/models" beforeDir="false" afterPath="$PROJECT_DIR$/tf/models" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/arduino/.vscode/arduino.json" beforeDir="false" afterPath="$PROJECT_DIR$/arduino/.vscode/arduino.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/arduino/DHT11/ex01/app.ino" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/arduino/ESP/ex01/app.ino" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/arduino/ESP/ex03/WifiUtil.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/arduino/ESP/ex03/WifiUtil.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/arduino/ESP/ex03/app.ino" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/arduino/ESP/ex04/app.ino" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/arduino/sketch_sep17a/sketch_sep17a.ino" beforeDir="false" afterPath="$PROJECT_DIR$/arduino/sketch_sep17a/sketch_sep17a.ino" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tf/models/research/object_detection/data/mscoco_label_map.pbtxt" beforeDir="false" afterPath="$PROJECT_DIR$/tf/models/research/object_detection/data/mscoco_label_map.pbtxt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tf/models/research/object_detection/test_images/image1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tf/models/research/object_detection/test_images/image2.jpg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
